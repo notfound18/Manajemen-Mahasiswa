@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nexus Edu - Premium Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet" />
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+      body {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background-attachment: fixed;
+        min-height: 100vh;
+        color: #1e293b;
+      }
+      .glass {
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      }
+      .input-premium {
+        background: rgba(241, 245, 249, 0.7);
+        border: 1px solid transparent;
+        transition: all 0.3s ease;
+      }
+      .input-premium:focus {
+        background: white;
+        border-color: #6366f1;
+        box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+        outline: none;
+      }
+      .btn-gradient {
+        background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+        transition: all 0.3s transform;
+      }
+      .btn-gradient:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px -5px rgba(79, 70, 229, 0.5);
+      }
+      .algo-label {
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 0.05em;
+        color: #6366f1;
+        background: rgba(99, 102, 241, 0.1);
+        padding: 2px 8px;
+        border-radius: 6px;
+      }
+    </style>
+  </head>
+  <body class="p-4 md:p-10 flex flex-col items-center">
+    <div class="w-full max-w-6xl">
+      <header class="flex flex-col md:flex-row justify-between items-center mb-10 text-white gap-6">
+        <div class="text-center md:text-left">
+          <h1 class="text-4xl font-extrabold tracking-tight">NexusEdu <span class="font-light text-indigo-200">Pro</span></h1>
+          <p class="text-indigo-100 opacity-80">Manajemen Data Mahasiswa Berbasis Algoritma</p>
+        </div>
+
+        <div class="relative group">
+          <div class="absolute -top-6 right-0 algo-label text-white bg-indigo-500/30">Linear Search Active</div>
+          <i data-lucide="search" class="absolute left-4 top-3.5 w-5 h-5 text-indigo-400"></i>
+          <input type="text" id="searchInput" placeholder="Cari Mahasiswa..." class="pl-12 pr-6 py-3.5 w-80 rounded-2xl glass border-none focus:ring-2 focus:ring-white outline-none text-slate-800 font-medium" />
+        </div>
+      </header>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <div class="lg:col-span-4">
+          <div class="glass p-8 rounded-[2rem] sticky top-10">
+            <h2 id="formTitle" class="text-xl font-extrabold mb-6 flex items-center gap-2"><i data-lucide="plus-circle" class="text-indigo-600"></i> Tambah Mahasiswa</h2>
+            <form id="studentForm" class="space-y-5">
+              <input type="hidden" id="editIndex" value="-1" />
+
+              <div>
+                <label class="text-[11px] font-bold text-slate-400 uppercase ml-2">NIM (8-12 Digit)</label>
+                <input type="text" id="nim" class="w-full px-5 py-4 rounded-2xl input-premium" placeholder="Ex: 20241002" />
+              </div>
+
+              <div>
+                <label class="text-[11px] font-bold text-slate-400 uppercase ml-2">Nama Lengkap</label>
+                <input type="text" id="nama" class="w-full px-5 py-4 rounded-2xl input-premium" placeholder="Nama Mahasiswa" />
+              </div>
+
+              <div>
+                <label class="text-[11px] font-bold text-slate-400 uppercase ml-2">Email Kampus</label>
+                <input type="email" id="email" class="w-full px-5 py-4 rounded-2xl input-premium" placeholder="name@univ.ac.id" />
+              </div>
+
+              <button type="submit" id="submitBtn" class="w-full py-4 text-white font-bold rounded-2xl btn-gradient flex items-center justify-center gap-2"><i data-lucide="send" class="w-5 h-5"></i> Simpan Data</button>
+              <button type="button" id="cancelBtn" class="hidden w-full py-2 text-slate-400 hover:text-slate-600 font-semibold transition">Batalkan Edit</button>
+            </form>
+          </div>
+        </div>
+
+        <div class="lg:col-span-8">
+          <div class="glass rounded-[2.5rem] overflow-hidden">
+            <div class="p-6 border-b border-slate-100 flex justify-between items-center flex-wrap gap-4">
+              <div>
+                <h3 class="font-extrabold text-slate-800">Daftar Mahasiswa</h3>
+                <p class="text-xs text-slate-400">Total: <span id="count" class="text-indigo-600 font-bold">0</span> Data</p>
+              </div>
+              <div class="flex gap-2">
+                <button onclick="runSort('nama')" class="px-4 py-2 text-xs font-bold bg-white hover:bg-indigo-50 text-indigo-600 rounded-xl shadow-sm transition-all flex items-center gap-2">
+                  <span class="algo-label">Bubble Sort</span> Nama
+                </button>
+                <button onclick="runSort('nim')" class="px-4 py-2 text-xs font-bold bg-white hover:bg-indigo-50 text-indigo-600 rounded-xl shadow-sm transition-all flex items-center gap-2">
+                  <span class="algo-label">Selection Sort</span> NIM
+                </button>
+              </div>
+            </div>
+
+            <div class="overflow-x-auto">
+              <table class="w-full">
+                <thead>
+                  <tr class="text-left text-slate-400 text-[10px] uppercase tracking-widest font-bold">
+                    <th class="px-8 py-5">Mahasiswa</th>
+                    <th class="px-8 py-5">Email</th>
+                    <th class="px-8 py-5 text-right">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="studentList" class="divide-y divide-slate-50"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+      lucide.createIcons();
+    </script>
+  </body>
+</html>
